@@ -460,6 +460,7 @@ CM.Sim.BuyBuildings = function(amount, target) {
 			if (me.amount >= 400) CM.Sim.Win('Dr. T');
 			if (me.amount >= 500) CM.Sim.Win('Thumbs, phalanges, metacarpals');
 			if (me.amount >= 600) CM.Sim.Win('With her finger and her thumb');
+			if (me.amount >= 700) CM.Sim.Win("Gotta hand it to you");
 		}
 		else {
 			for (var j in Game.Objects[me.name].tieredAchievs) {
