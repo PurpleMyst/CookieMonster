@@ -404,6 +404,7 @@ CM.Sim.CheckOtherAchiev = function() {
 	if (minAmount >= 400) CM.Sim.Win('Quadricentennial');
 	if (minAmount >= 450) CM.Sim.Win('Quadricentennial and a half');
 	if (minAmount >= 500) CM.Sim.Win('Quincentennial');
+	if (minAmount >= 550) CM.Sim.Win("Quincentennial and a half");
 
 	if (buildingsOwned >= 100) CM.Sim.Win('Builder');
 	if (buildingsOwned >= 500) CM.Sim.Win('Architect');
