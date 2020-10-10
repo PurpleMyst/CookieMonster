@@ -1468,6 +1468,18 @@ CM.Disp.ToggleGCTimer = function() {
 	}
 }
 
+CM.Disp.ShowNotification = async function(title, options) {
+	if (Notification.permission === "denied") return;
+
+	if (Notification.permission === "default") {
+		await Notification.requestPermission();
+	}
+
+	if (Notification.permission !== "granted") return;
+
+	return new Notification(title, options);
+}
+
 CM.Disp.CheckGoldenCookie = function() {
 	if (CM.Disp.lastGoldenCookieState != Game.shimmerTypes['golden'].spawned) {
 		CM.Disp.lastGoldenCookieState = Game.shimmerTypes['golden'].spawned;
@@ -1482,6 +1494,17 @@ CM.Disp.CheckGoldenCookie = function() {
 
 			CM.Disp.Flash(3, 'GCFlash');
 			CM.Disp.PlaySound(CM.Config.GCSoundURL, 'GCSound', 'GCVolume');
+
+			var title, image;
+			if (CM.Disp.goldenShimmer.wrath) {
+				title = "A wrath cookie has appeared!";
+				image = 'https://aktanusa.github.io/CookieMonster/favicon/wrathCookie.ico';
+			} else {
+				title = "A golden cookie has appeared!";
+				image = 'https://aktanusa.github.io/CookieMonster/favicon/goldenCookie.ico';
+			}
+
+			CM.Disp.ShowNotification(title, {image});
 		}
 		else if (CM.Config.GCTimer == 1) CM.Disp.GCTimer.style.display = 'none';
 	}
@@ -3527,7 +3550,7 @@ CM.Sim.BuyUpgrades = function() {
 			else if (i == 'Elder Covenant') {
 				CM.Sim.Win('Elder calm')
 			}
-			else if (i == CM.Data.ValCookies[CM.Data.ValCookies.length - 1]) {
+			else if (i == 'Eternal heart cookies') {
 				CM.Sim.Win('Lovely cookies');
 			}
 			else if (i == 'Heavenly key') {
