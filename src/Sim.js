@@ -504,7 +504,7 @@ CM.Sim.BuyUpgrades = function() {
 			else if (i == 'Elder Covenant') {
 				CM.Sim.Win('Elder calm')
 			}
-			else if (i == CM.Data.ValCookies[CM.Data.ValCookies.length - 1]) {
+			else if (i == 'Eternal heart cookies') {
 				CM.Sim.Win('Lovely cookies');
 			}
 			else if (i == 'Heavenly key') {
