@@ -916,6 +916,8 @@ CM.Disp.CheckSeasonPopup = function() {
 
 			CM.Disp.Flash(3, 'SeaFlash');
 			CM.Disp.PlaySound(CM.Config.SeaSoundURL, 'SeaSound', 'SeaVolume');
+
+			CM.Disp.ShowNotification("A reindeer has appeared!", {});
 		}
 	}
 }
