@@ -882,7 +882,7 @@ CM.Disp.CheckGoldenCookie = function() {
 			}
 
 			CM.Disp.lastGCNotification = undefined;
-			CM.Disp.ShowNotification(title, {icon, renotify: true}).then(function (notification) {
+			CM.Disp.ShowNotification(title, {icon, requireInteraction: true, renotify: true}).then(function (notification) {
 				CM.Disp.lastGCNotification = notification;
 			});
 		}
@@ -911,19 +911,27 @@ CM.Disp.CheckTickerFortune = function() {
 CM.Disp.CheckSeasonPopup = function() {
 	if (CM.Disp.lastSeasonPopupState != Game.shimmerTypes['reindeer'].spawned) {
 		CM.Disp.lastSeasonPopupState = Game.shimmerTypes['reindeer'].spawned;
-		if (CM.Disp.lastSeasonPopupState && Game.season=='christmas') {
-			// Needed for some of the functions to use the right object
-			for (var i in Game.shimmers) {
-				if (Game.shimmers[i].spawnLead && Game.shimmers[i].type == 'reindeer') {
-					CM.Disp.seasonPopShimmer = Game.shimmers[i];
-					break;
+
+		if (Game.season === "christmas") {
+			if (CM.Disp.lastSeasonPopupState) {
+				// Needed for some of the functions to use the right object
+				for (var i in Game.shimmers) {
+					if (Game.shimmers[i].spawnLead && Game.shimmers[i].type == 'reindeer') {
+						CM.Disp.seasonPopShimmer = Game.shimmers[i];
+						break;
+					}
 				}
+
+				CM.Disp.Flash(3, 'SeaFlash');
+				CM.Disp.PlaySound(CM.Config.SeaSoundURL, 'SeaSound', 'SeaVolume');
+
+				CM.Disp.lastReindeerNotification = undefined;
+				CM.Disp.ShowNotification("A reindeer has appeared!", {requireInteraction: true, renotify: true}).then(function(notification) {
+					CM.Disp.lastReindeerNotification = notification;
+				});
+			} else {
+				if (CM.Disp.lastReindeerNotification) CM.Disp.lastReindeerNotification.close();
 			}
-
-			CM.Disp.Flash(3, 'SeaFlash');
-			CM.Disp.PlaySound(CM.Config.SeaSoundURL, 'SeaSound', 'SeaVolume');
-
-			CM.Disp.ShowNotification("A reindeer has appeared!", {});
 		}
 	}
 }
