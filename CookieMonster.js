@@ -1504,9 +1504,15 @@ CM.Disp.CheckGoldenCookie = function() {
 				icon = 'https://aktanusa.github.io/CookieMonster/favicon/goldenCookie.ico';
 			}
 
-			CM.Disp.ShowNotification(title, {icon, renotify: true});
+			CM.Disp.lastGCNotification = undefined;
+			CM.Disp.ShowNotification(title, {icon, requireInteraction: true, renotify: true}).then(function (notification) {
+				CM.Disp.lastGCNotification = notification;
+			});
 		}
-		else if (CM.Config.GCTimer == 1) CM.Disp.GCTimer.style.display = 'none';
+		else {
+			if (CM.Config.GCTimer == 1) CM.Disp.GCTimer.style.display = 'none';
+			if (CM.Disp.lastGCNotification) CM.Disp.lastGCNotification.close();
+		}
 	}
 	else if (CM.Config.GCTimer == 1 && CM.Disp.lastGoldenCookieState) {
 		CM.Disp.GCTimer.style.opacity = CM.Disp.goldenShimmer.l.style.opacity;
@@ -1528,17 +1534,27 @@ CM.Disp.CheckTickerFortune = function() {
 CM.Disp.CheckSeasonPopup = function() {
 	if (CM.Disp.lastSeasonPopupState != Game.shimmerTypes['reindeer'].spawned) {
 		CM.Disp.lastSeasonPopupState = Game.shimmerTypes['reindeer'].spawned;
-		if (CM.Disp.lastSeasonPopupState && Game.season=='christmas') {
-			// Needed for some of the functions to use the right object
-			for (var i in Game.shimmers) {
-				if (Game.shimmers[i].spawnLead && Game.shimmers[i].type == 'reindeer') {
-					CM.Disp.seasonPopShimmer = Game.shimmers[i];
-					break;
-				}
-			}
 
-			CM.Disp.Flash(3, 'SeaFlash');
-			CM.Disp.PlaySound(CM.Config.SeaSoundURL, 'SeaSound', 'SeaVolume');
+		if (Game.season === "christmas") {
+			if (CM.Disp.lastSeasonPopupState) {
+				// Needed for some of the functions to use the right object
+				for (var i in Game.shimmers) {
+					if (Game.shimmers[i].spawnLead && Game.shimmers[i].type == 'reindeer') {
+						CM.Disp.seasonPopShimmer = Game.shimmers[i];
+						break;
+					}
+				}
+
+				CM.Disp.Flash(3, 'SeaFlash');
+				CM.Disp.PlaySound(CM.Config.SeaSoundURL, 'SeaSound', 'SeaVolume');
+
+				CM.Disp.lastReindeerNotification = undefined;
+				CM.Disp.ShowNotification("A reindeer has appeared!", {requireInteraction: true, renotify: true}).then(function(notification) {
+					CM.Disp.lastReindeerNotification = notification;
+				});
+			} else {
+				if (CM.Disp.lastReindeerNotification) CM.Disp.lastReindeerNotification.close();
+			}
 		}
 	}
 }
