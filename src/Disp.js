@@ -872,17 +872,11 @@ CM.Disp.CheckGoldenCookie = function() {
 			CM.Disp.Flash(3, 'GCFlash');
 			CM.Disp.PlaySound(CM.Config.GCSoundURL, 'GCSound', 'GCVolume');
 
-			var title, icon;
-			if (CM.Disp.goldenShimmer.wrath) {
-				title = "A wrath cookie has appeared!";
-				icon = 'https://aktanusa.github.io/CookieMonster/favicon/wrathCookie.ico';
-			} else {
-				title = "A golden cookie has appeared!";
-				icon = 'https://aktanusa.github.io/CookieMonster/favicon/goldenCookie.ico';
-			}
-
 			CM.Disp.lastGCNotification = undefined;
-			CM.Disp.ShowNotification(title, {icon, requireInteraction: true, renotify: true}).then(function (notification) {
+			CM.Disp.ShowNotification(
+				CM.Disp.goldenShimmer.wrath ? "A wrath cookie has appeared!" : "A golden cookie has appeared!", 
+				{requireInteraction: true, renotify: true}
+			).then(function (notification) {
 				CM.Disp.lastGCNotification = notification;
 			});
 		}
