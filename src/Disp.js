@@ -881,9 +881,15 @@ CM.Disp.CheckGoldenCookie = function() {
 				icon = 'https://aktanusa.github.io/CookieMonster/favicon/goldenCookie.ico';
 			}
 
-			CM.Disp.ShowNotification(title, {icon, renotify: true});
+			CM.Disp.lastGCNotification = undefined;
+			CM.Disp.ShowNotification(title, {icon, renotify: true}).then(function (notification) {
+				CM.Disp.lastGCNotification = notification;
+			});
 		}
-		else if (CM.Config.GCTimer == 1) CM.Disp.GCTimer.style.display = 'none';
+		else {
+			if (CM.Config.GCTimer == 1) CM.Disp.GCTimer.style.display = 'none';
+			if (CM.Disp.lastGCNotification) CM.Disp.lastGCNotification.close();
+		}
 	}
 	else if (CM.Config.GCTimer == 1 && CM.Disp.lastGoldenCookieState) {
 		CM.Disp.GCTimer.style.opacity = CM.Disp.goldenShimmer.l.style.opacity;
