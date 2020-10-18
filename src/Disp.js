@@ -898,6 +898,11 @@ CM.Disp.CheckTickerFortune = function() {
 		if (CM.Disp.lastTickerFortuneState) {
 			CM.Disp.Flash(3, 'FortuneFlash');
 			CM.Disp.PlaySound(CM.Config.FortuneSoundURL, 'FortuneSound', 'FortuneVolume');
+			CM.Disp.ShowNotification("A fortune has appeared!", {requireInteraction: true, renotify: true}).then(function(notification) {
+				CM.Disp.lastTickerFortuneNotification = notification;
+			});
+		} else {
+			if (CM.Disp.lastTickerFortuneNotification) CM.Disp.lastTickerFortuneNotification.close();
 		}
 	}
 }
